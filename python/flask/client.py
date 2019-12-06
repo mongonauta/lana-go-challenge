@@ -12,7 +12,7 @@ class HTTPClient(object):
     def _get_url(self, end_point, params=None):
         url = f'http://{self.host}:{self.port}/{end_point}/'
         if params:
-            url += '/'.join(params)
+            url += '/'.join(params) + '/'
 
         return url
 
