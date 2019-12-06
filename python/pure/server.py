@@ -5,6 +5,15 @@ from python.core.messages import Message, MessageManager
 
 
 class Server(object):
+    """
+    The Server.
+
+    Accepts connections by socket and listen the messages in host + port.
+
+    In addition to that, keep the BasketManager control (a database)
+
+    TODO: Multi-threading. Currently, only one message is handled.
+    """
     host = None
     port = None
     sock = None
@@ -45,6 +54,13 @@ class Server(object):
                         break
 
     def message_handler(self, message):
+        """
+        Message handler. Translate every received message in a valid manager action and returns a valid message
+        with the response of the action.
+
+        message: MessageItem object
+        return: MessageItem object
+        """
         if message.code == Message.CREATE_BASKET_MESSAGE:
             basket_code = self.manager.create()
             return MessageManager.create_basket_message(basket_code)
