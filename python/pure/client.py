@@ -72,8 +72,9 @@ if __name__ == "__main__":
             client.send_add_product(basket_code, product_code)
 
         # CHECKOUT
-        print(f'Items: {client.send_get_products_message(basket_code)}')
-        print(f'Total: {client.send_get_checkout_message(basket_code)} EUR')
+        products_str = ', '.join(client.send_get_products_message(basket_code))
+        print(f'Items: {products_str}')
+        print(f'Total: {client.send_get_checkout_message(basket_code)}€\n')
 
         # CLOSING BASKET
         client.send_remove_basket_message(basket_code)
