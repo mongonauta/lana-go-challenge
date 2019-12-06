@@ -1,8 +1,14 @@
+"""
+Client example
+"""
 import socket
 from python.core.messages import MessageManager, Message
 
 
 class Client(object):
+    """
+    Class to create a connection and send messages to a server listening in Host and Port.
+    """
     sock = None
 
     def __init__(self, host, port):
@@ -10,24 +16,48 @@ class Client(object):
         self.port = port
 
     def _send_message(self, message_str):
+        """
+        Helper to send messages to the server. Also receives the answer from the server.
+
+        message_str: json string
+        return: json string
+        """
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((self.host, self.port))
             s.sendall(message_str.encode())
             return s.recv(1024).decode()
 
     def send_create_basket_message(self):
+        """
+        Send a create basket message.
+
+        return: basket code (uuid)
+        """
         message = MessageManager.create_basket_message(basket_code=None)
         message_response = Message.deserialize(self._send_message(message.serialize()))
 
         return message_response.content['basket_code']
 
     def send_remove_basket_message(self, basket_code):
+        """
+        Send a remove basket message
+
+        basket_code: uuid
+        return: Message object
+        """
         message = MessageManager.remove_basket_message(basket_code)
         message_response = Message.deserialize(self._send_message(message.serialize()))
 
         return message_response.serialize()
 
     def send_add_product(self, basket_code, product_code):
+        """
+        Send an add product to basket message
+
+        basket_code: uuid
+        product_code: Code of a products (str)
+        return: Message object
+        """
         message = MessageManager.add_product_message(
             basket_code=basket_code,
             product_code=product_code
@@ -37,18 +67,34 @@ class Client(object):
         return message_response.serialize()
 
     def send_get_products_message(self, basket_code):
+        """
+        Send a get products from a basket message
+
+        basket_code: uuid
+
+        return: Message object
+        """
         message = MessageManager.get_products_message(basket_code=basket_code)
         message_response = Message.deserialize(self._send_message(message.serialize()))
 
         return message_response.content['products']
 
     def send_get_checkout_message(self, basket_code):
+        """
+        Send a get checkout from a basket message
+
+        basket_code: uuid
+        return: total value (float)
+        """
         message = MessageManager.get_checkout_message(basket_code=basket_code)
         message_response = Message.deserialize(self._send_message(message.serialize()))
 
         return message_response.content['total']
 
     def close(self):
+        """
+        Please, always close connections
+        """
         if self.sock:
             self.sock.close()
 
