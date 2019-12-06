@@ -91,7 +91,7 @@ class MessageManager(object):
         )
 
     @classmethod
-    def get_products_message(cls, basket_code, products=None):
+    def get_products_message(cls, basket_code=None, products=None):
         return Message(
             code=Message.GET_PRODUCTS_MESSAGE,
             content={

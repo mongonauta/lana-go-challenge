@@ -72,7 +72,7 @@ class Server(object):
             basket_code = message.content['basket_code']
             products = self.manager.get_products(basket_code)
 
-            return MessageManager.get_products_message(products)
+            return MessageManager.get_products_message(products=products)
 
         return MessageManager.create_invalid_message()
 
