@@ -49,11 +49,13 @@ class Inventory(object):
     """
     _products = None
 
-    def __init__(self, file_path):
+    def __init__(self, data_file_path):
         """
             Reads the inventory from a file, converting every json object in an InventoryItem object.
+
+            data_file_path: Path to json file
         """
-        with open(file_path) as fp:
+        with open(data_file_path) as fp:
             self._products = {
                 i['code']: InventoryItem.create_item(code=i['code'], name=i['name'], price=i['price'])
                 for i in json.load(fp)
