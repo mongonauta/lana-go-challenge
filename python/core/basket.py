@@ -37,7 +37,7 @@ class BasketItem(object):
 
     @classmethod
     def create(cls):
-        return BasketItem(code=uuid.uuid4())
+        return BasketItem(code=str(uuid.uuid4()))
 
 
 class BasketManager(object):
