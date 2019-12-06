@@ -74,6 +74,12 @@ class Server(object):
 
             return MessageManager.get_products_message(products=products)
 
+        if message.code == Message.GET_CHECKOUT_MESSAGE:
+            basket_code = message.content['basket_code']
+            total = self.manager.checkout(basket_code)
+
+            return MessageManager.get_checkout_message(total=total)
+
         return MessageManager.create_invalid_message()
 
 

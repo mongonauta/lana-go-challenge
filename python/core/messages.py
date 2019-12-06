@@ -12,6 +12,7 @@ class Message(object):
     REMOVE_PRODUCT_MESSAGE = 4
 
     GET_PRODUCTS_MESSAGE = 5
+    GET_CHECKOUT_MESSAGE = 6
 
     code = 0
     content = None
@@ -97,5 +98,15 @@ class MessageManager(object):
             content={
                 'basket_code': basket_code,
                 'products': products
+            }
+        )
+
+    @classmethod
+    def get_checkout_message(cls, basket_code=None, total=None):
+        return Message(
+            code=Message.GET_CHECKOUT_MESSAGE,
+            content={
+                'basket_code': basket_code,
+                'total': total
             }
         )

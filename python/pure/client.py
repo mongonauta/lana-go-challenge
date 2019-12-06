@@ -42,6 +42,12 @@ class Client(object):
 
         return message_response.content['products']
 
+    def send_get_checkout_message(self, basket_code):
+        message = MessageManager.get_checkout_message(basket_code=basket_code)
+        message_response = Message.deserialize(self._send_message(message.serialize()))
+
+        return message_response.content['total']
+
     def close(self):
         if self.sock:
             self.sock.close()
@@ -65,7 +71,7 @@ if __name__ == "__main__":
             print(client.send_add_product(basket_code, product_code))
 
         print(f'Items: {client.send_get_products_message(basket_code)}')
-        # print(f'Total: {manager.checkout(basket_code)} EUR')
+        print(f'Total: {client.send_get_checkout_message(basket_code)} EUR')
 
         print(client.send_remove_basket_message(basket_code))
         break
