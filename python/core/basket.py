@@ -17,11 +17,23 @@ class BasketItem(object):
     def remove_from_basket(self, item):
         self._products.pop(item)
 
-    def total_amount(self):
-        return sum(item.price for item in self._products)
-
     def get_products(self):
         return [item.code for item in self._products]
+
+    def total_amount(self):
+        full_price = sum(item.price for item in self._products)
+        return full_price - self._get_discount()
+
+    def _get_discount(self):
+        number_of_pens = len([x for x in self._products if x.code == 'PEN'])
+        number_of_tshirts = len([x for x in self._products if x.code == 'TSHIRT'])
+
+        discount = 5.0 * int(number_of_pens / 2)
+
+        if number_of_tshirts >= 3:
+            discount += 5.0 * number_of_tshirts
+
+        return discount
 
     @classmethod
     def create(cls):
