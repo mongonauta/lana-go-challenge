@@ -9,7 +9,8 @@ class Client(object):
     """
     Class to create a connection and send messages to a server listening in Host and Port.
     """
-    sock = None
+    host = None
+    port = None
 
     def __init__(self, host, port):
         self.host = host
@@ -91,13 +92,6 @@ class Client(object):
 
         return message_response.content['total']
 
-    def close(self):
-        """
-        Please, always close connections
-        """
-        if self.sock:
-            self.sock.close()
-
 
 test_cases = [
     ['PEN', 'TSHIRT', 'MUG'],
@@ -124,5 +118,3 @@ if __name__ == "__main__":
 
         # CLOSING BASKET
         client.send_remove_basket_message(basket_code)
-
-    client.close()
