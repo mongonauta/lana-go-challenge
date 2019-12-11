@@ -1,6 +1,14 @@
 import json
 
 
+class MalformedMessageException(Exception):
+    """
+    Message invalid
+    """
+    def __init__(self):
+        pass
+
+
 class Message(object):
     """
     This class tries to be a helper to keep consistent between client and servers of the app.
@@ -55,10 +63,14 @@ class Message(object):
         return: Message
         """
         json_obj = json.loads(s)
-        return Message(
-            code=json_obj['code'],
-            content=json_obj['content']
-        )
+
+        try:
+            return Message(
+                code=json_obj['code'],
+                content=json_obj['content']
+            )
+        except KeyError:
+            raise MalformedMessageException()
 
 
 class MessageManager(object):

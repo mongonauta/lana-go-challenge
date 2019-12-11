@@ -3,6 +3,14 @@ import uuid
 from .inventory import Inventory
 
 
+class BasketDoesNotExistException(Exception):
+    """
+    Basket code not found -> Integrity Error
+    """
+    def __init__(self):
+        pass
+
+
 class BasketItem(object):
     """
     This item is a basket representation.
@@ -49,7 +57,7 @@ class BasketItem(object):
 
         return: total price of all products - discounts (float)
         """
-        full_price = sum(item.price for item in self._products)
+        full_price = sum(item.price for item in self._products) if self._products else 0.0
         return full_price - self._get_discount()
 
     def _get_discount(self):
@@ -115,6 +123,9 @@ class BasketManager(object):
 
         return:
         """
+        if code not in self._baskets:
+            raise BasketDoesNotExistException()
+
         self._baskets.pop(code)
 
     def add_product(self, code, product_code):
@@ -126,6 +137,9 @@ class BasketManager(object):
 
         return:
         """
+        if code not in self._baskets:
+            raise BasketDoesNotExistException()
+
         self._baskets[code].add_to_basket(
             item=self._inventory.get_item_by_code(code=product_code)
         )
@@ -139,6 +153,9 @@ class BasketManager(object):
 
         return:
         """
+        if code not in self._baskets:
+            raise BasketDoesNotExistException()
+
         self._baskets[code].remove_from_basket(
             item=self._inventory.get_item_by_code(code=product_code)
         )
@@ -151,6 +168,8 @@ class BasketManager(object):
 
         return:
         """
+        if code not in self._baskets:
+            raise BasketDoesNotExistException()
         return self._baskets[code].get_products()
 
     def checkout(self, code):
@@ -161,4 +180,7 @@ class BasketManager(object):
 
         return: float
         """
+        if code not in self._baskets:
+            raise BasketDoesNotExistException()
+
         return self._baskets[code].total_amount()
