@@ -1,3 +1,5 @@
+# coding: utf-8
+import argparse
 import requests
 
 
@@ -76,8 +78,12 @@ test_cases = [
     ['PEN', 'TSHIRT', 'PEN', 'PEN', 'MUG', 'TSHIRT', 'TSHIRT'],
 ]
 
-if __name__ == "__main__":
-    client = HTTPClient('127.0.0.1', 5000)
+
+def main(**params):
+    host = params.get('host')
+    port = int(params.get('port'))
+
+    client = HTTPClient(host=host, port=port)
 
     for t in test_cases:
         # GET BASKET CODE
@@ -96,3 +102,18 @@ if __name__ == "__main__":
         client.send_remove_basket_message(basket_code)
 
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Pure Python Client", add_help=False)
+    parser.add_argument(
+        "-h", "--host", help="Host where the Flask server is listening. Default: 127.0.0.1",
+        required=False, default='127.0.0.1'
+    )
+    parser.add_argument(
+        "-p", "--port", help="Port where the Flask server is listening. Default: 5000",
+        required=False,
+        default=5000
+    )
+    parser.set_defaults(local_mode=False)
+
+    args = parser.parse_args()
+    main(**vars(args))

@@ -127,11 +127,11 @@ def main(**params):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Pure Python Client", add_help=False)
     parser.add_argument(
-        "-h", "--host", help="Host where the server must listen. Default: 127.0.0.1",
+        "-h", "--host", help="Host where the server is listening. Default: 127.0.0.1",
         required=False, default='127.0.0.1'
     )
     parser.add_argument(
-        "-p", "--port", help="Port the server must listen. Default: 65432",
+        "-p", "--port", help="Port where the server is listening. Default: 65432",
         required=False,
         default=65432
     )

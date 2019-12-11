@@ -115,7 +115,7 @@ if __name__ == '__main__':
         required=False, default='127.0.0.1'
     )
     parser.add_argument(
-        "-p", "--port", help="Port the server must listen. Default: 65432",
+        "-p", "--port", help="Port where the server must listen. Default: 65432",
         required=False,
         default=65432
     )
