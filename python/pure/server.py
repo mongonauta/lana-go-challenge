@@ -1,3 +1,5 @@
+# coding: utf-8
+import argparse
 import socket
 
 from python.core.basket import BasketManager
@@ -19,12 +21,10 @@ class Server(object):
     sock = None
     manager = None
 
-    def __init__(self, host, port):
+    def __init__(self, inventory_path, host, port):
         self.host = host
         self.port = port
-        self.manager = BasketManager(
-            data_file_path='/Users/jose/Development/lana-go-challenge/data/products.json'
-        )
+        self.manager = BasketManager(data_file_path=inventory_path)
 
     def listen(self):
         print(f'Listening in {self.host}:{self.port}...\n\n')
@@ -99,5 +99,27 @@ class Server(object):
         return MessageManager.create_invalid_message()
 
 
-if __name__ == "__main__":
-    Server(host='127.0.0.1', port=65432).listen()
+def main(**params):
+    inventory_path = params.get('inventory', None)
+    host = params.get('host')
+    port = int(params.get('port'))
+
+    Server(inventory_path=inventory_path, host=host, port=port).listen()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Pure Python server", add_help=False)
+    parser.add_argument("-i", "--inventory", help="Path to JSON inventory file", required=True)
+    parser.add_argument(
+        "-h", "--host", help="Host where the server must listen. Default: 127.0.0.1",
+        required=False, default='127.0.0.1'
+    )
+    parser.add_argument(
+        "-p", "--port", help="Port the server must listen. Default: 65432",
+        required=False,
+        default=65432
+    )
+    parser.set_defaults(local_mode=False)
+
+    args = parser.parse_args()
+    main(**vars(args))

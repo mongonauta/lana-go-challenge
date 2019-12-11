@@ -1,6 +1,6 @@
-"""
-Client example
-"""
+# coding: utf-8
+import argparse
+
 import socket
 from python.core.messages import MessageManager, Message
 
@@ -100,8 +100,12 @@ test_cases = [
     ['PEN', 'TSHIRT', 'PEN', 'PEN', 'MUG', 'TSHIRT', 'TSHIRT'],
 ]
 
-if __name__ == "__main__":
-    client = Client('127.0.0.1', 65432)
+
+def main(**params):
+    host = params.get('host')
+    port = int(params.get('port'))
+
+    client = Client(host=host, port=port)
 
     for t in test_cases:
         # GET BASKET CODE
@@ -118,3 +122,20 @@ if __name__ == "__main__":
 
         # CLOSING BASKET
         client.send_remove_basket_message(basket_code)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Pure Python Client", add_help=False)
+    parser.add_argument(
+        "-h", "--host", help="Host where the server must listen. Default: 127.0.0.1",
+        required=False, default='127.0.0.1'
+    )
+    parser.add_argument(
+        "-p", "--port", help="Port the server must listen. Default: 65432",
+        required=False,
+        default=65432
+    )
+    parser.set_defaults(local_mode=False)
+
+    args = parser.parse_args()
+    main(**vars(args))
