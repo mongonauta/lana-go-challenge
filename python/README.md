@@ -9,6 +9,7 @@ This is a technical test proposed by Lana. The description of the test is detail
 * [Core](#core)
 * [Pure Python solution](#pure_python)
 * [Flask Solution](#flask)
+* [Docker](#docker)
 
 # <a href="description"></a>Description
 
@@ -42,7 +43,8 @@ NA
 To run the server you must use the command:
 
 ```
-python pure/server.py -i ~/lana-go-challenge/data/products.json
+> export PYTHONPATH=$PYTHONPATH:./
+> python python/pure/server.py  -i ./data/products.json 
 ```
 
 The script will wait until a client send a message and will print what receives.
@@ -51,7 +53,7 @@ NOTE: Default socket configuration is `127.0.0.1:65432`. If you want to modify i
 For example:
 
 ```
-python pure/server.py -i ~/lana-go-challenge/data/products.json -h 192.0.0.1 -p 8000
+> python python/pure/server.py -i ./data/products.json -h 192.0.0.1 -p 8000
 ```
 
 
@@ -60,14 +62,15 @@ python pure/server.py -i ~/lana-go-challenge/data/products.json -h 192.0.0.1 -p 
 To run the client you must use the command:
 
 ```
-python pure/client.py
+> export PYTHONPATH=$PYTHONPATH:./
+> python python/pure/client.py
 ```
 
 NOTE: Default socket configuration is `127.0.0.1:65432`. If you want to modify it, you can use `-h` and `-p` params.
 For example:
 
 ```
-python pure/client.py -h 192.0.0.1 -p 8000
+> python pure/client.py -h 192.0.0.1 -p 8000
 ```
 
 The client has hardcoded some use tests so, the expected output should be:
@@ -101,34 +104,38 @@ To run the Flask application, you need to create and environment and install the
 ```
 > virtualenv -p python3.7 venv
 > source venv/bin/activate
-> pip install -r requirements.txt
+> pip install -r python/requirements.txt
 ```
 
 NOTE: In addition to Flask dependency, I added Requests to make client more simple.
 
 ## How to run the server
 
-To run the server you must use the command:
+To run the server you must use the commands:
 
 ```
-python flask/server.py
+> source venv/bin/activate
+> export PYTHONPATH=$PYTHONPATH:./
+> export INVENTORY=./data/products.json
+> python python/flask/server.py
 ```
 
 and the Flask application will run and will wait in the default host and port, `http://127.0.0.1:5000`.
 
 ## How to run the client
 
-To run the client you must use the command:
+To run the client you must use the commands:
 
 ```
-python flask/client.py
+> source python/venv/bin/activate
+> python python/flask/client.py
 ```
 
 NOTE: Default Flask server configuration is `127.0.0.1:5000`. If you want to modify it, you can use `-h` and `-p` params.
 For example:
 
 ```
-python flask/client.py -h 192.0.0.1 -p 8000
+> python flask/client.py -h 192.0.0.1 -p 8000
 ```
 
 The client has hardcoded some use tests so, the expected output should be:
@@ -146,3 +153,21 @@ Total: 65.0€
 Items: PEN, TSHIRT, PEN, PEN, MUG, TSHIRT, TSHIRT
 Total: 62.5€
 ```
+
+# <a href="docker"></a>Docker
+
+As example of dockerization, I included a Docker file to deploy the Flask server in a docker image.
+
+To run it, first you need to build the images using:
+
+```
+> docker build -t lana-challenge:latest .
+```
+
+and secondly, run it:
+```
+> docker run lana-challenge:latest
+```
+
+NOTE: I'm assuming you have Docker installed.
+

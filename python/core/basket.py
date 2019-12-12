@@ -1,6 +1,6 @@
 import uuid
 
-from .inventory import Inventory
+from python.core.inventory import Inventory
 
 
 class BasketDoesNotExistException(Exception):

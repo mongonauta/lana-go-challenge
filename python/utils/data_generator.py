@@ -1,3 +1,5 @@
+# coding: utf-8
+import argparse
 import json
 
 
@@ -19,5 +21,17 @@ products = [
     }
 ]
 
-with open('../data/products.json', 'w') as fp:
-    json.dump(products, fp)
+
+def main(**params):
+    output = params.get('output')
+    with open(output, 'w') as fp:
+        json.dump(products, fp)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="JSON file generator", add_help=False)
+    parser.add_argument("-o", "--output", help="Path to the output file")
+    parser.set_defaults(local_mode=False)
+
+    args = parser.parse_args()
+    main(**vars(args))

@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, jsonify, request
 from functools import wraps
@@ -9,7 +10,7 @@ from python.core.messages import MessageManager
 app = Flask(__name__)
 
 manager = BasketManager(
-    data_file_path='/Users/jose/Development/lana-go-challenge/data/products.json'
+    data_file_path=os.getenv('INVENTORY')
 )
 
 
