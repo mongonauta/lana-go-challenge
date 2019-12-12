@@ -127,6 +127,7 @@ and the Flask application will run and will wait in the default host and port, `
 To run the client you must use the commands:
 
 ```
+> export PYTHONPATH=$PYTHONPATH:./
 > source python/venv/bin/activate
 > python python/flask/client.py
 ```
@@ -135,7 +136,7 @@ NOTE: Default Flask server configuration is `127.0.0.1:5000`. If you want to mod
 For example:
 
 ```
-> python flask/client.py -h 192.0.0.1 -p 8000
+> python python/flask/client.py -h 192.0.0.1 -p 8000
 ```
 
 The client has hardcoded some use tests so, the expected output should be:
